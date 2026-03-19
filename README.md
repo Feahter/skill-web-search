@@ -2,25 +2,27 @@
 
 > OpenClaw Skill：网页正文提取与内容抓取
 
-永久免费、支持微信公众号的网页内容提取工具，4 级降级策略自动选择最优方案。
+永久免费、支持微信公众号的网页内容提取工具，4+1 级降级策略自动选择最优方案。
 
 ## 功能特性
 
-- 🌐 **支持所有主流平台**：微信公众号、知乎、CSDN、GitHub、小红书、Medium 等
+- 🌐 **支持所有主流平台**：微信公众号、知乎、B站、小红书、Twitter、GitHub 等
 - 📄 **干净 Markdown 输出**：保留标题层级、超链接、图片 URL、列表代码块
-- 🔄 **4 级降级策略**：Jina → Scrapling → Browser → web_fetch，失败自动切换
+- 🔄 **4+1 级降级策略**：Jina → Scrapling → Browser → web_fetch → opencli，失败自动切换
 - 🔓 **无 API 限制**：Scrapling 方案完全免费，无需注册
-- 🐚 **零配置**：安装依赖后直接使用，无需 API Key
+- 🤖 **opencli 集成**：已安装时可用 API 级提取（XHR interception），成功率更高
+- 🐚 **零配置**：基础功能安装依赖后直接使用，无需 API Key
 
 ## 支持的网站
 
-| 网站 | 推荐方案 | 备注 |
+| 网站 | 推荐方案 | opencli（可选） |
 |------|---------|------|
-| 普通网页（GitHub/博客/新闻） | Jina | 最快最干净 |
-| 微信公众号 | Scrapling | 唯一稳定方案 |
-| 知乎、掘金、CSDN、小红书 | Scrapling | Jina 经常失败 |
-| 需要 JS 渲染的页面 | Browser | 最终保底 |
-| 静态页面 | web_fetch | 最低优先级 |
+| B站 | Scrapling | ✅ `opencli bilibili hot` |
+| 知乎 | Scrapling | ✅ `opencli zhihu hot` |
+| 小红书 | Scrapling | ✅ `opencli xiaohongshu search` |
+| Twitter/X | Scrapling | ✅ `opencli twitter trending` |
+| 微信公众号 | Scrapling | ❌ 不支持（需 JS 渲染） |
+| 普通网页（GitHub/博客/新闻） | Jina | ❌ 不适用 |
 
 ## 安装
 
@@ -31,7 +33,16 @@ pip3 install scrapling html2text playwright --break-system-packages
 playwright install chromium
 ```
 
-### 2. 复制 Skill 文件
+### 2. 可选：安装 opencli（API 级提取）
+
+```bash
+npm install -g @jackwener/opencli
+```
+
+opencli 通过 Chrome 扩展 + XHR interception 发现真实 API，成功率比 DOM 快照更高。
+需要安装 Chrome 扩展（加载 `extension/` 文件夹）并登录目标网站。
+
+### 3. 复制 Skill 文件
 
 将 `SKILL.md` 和 `scripts/fetch.py` 复制到 OpenClaw skills 目录：
 
